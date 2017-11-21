@@ -51,7 +51,7 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
 
     // list of all files with working sectors
     if(!isSimulation) loop.readSectorFileList("/lustre/nyx/hades/dst/apr12/gen8/sector_selection/FileListHadron.list",kFALSE,kFALSE);
-
+//if(!isSimulation) loop.readSectorFileList("/lustre/nyx/cbm/users/ogolosov/HADES/treeMaker/src/list_gen109_day108.txt",kFALSE,kFALSE);
     // reading input files and declaring containers
     Bool_t ret = kFALSE;
     if(infileList.Contains(",")){
@@ -101,8 +101,28 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
     //   ##   ## ##   ##     ##
     //   ##   ##  ##  #####  #####
     //-----------------------------------------------------------------------
-// Bool_t IsGoodEvent=false;
+    Short_t wallChargeTot;
+    Short_t wallChargeTot_ring1, wallChargeTot_ring2, wallChargeTot_ring3, wallChargeTot_ring4, wallChargeTot_ring5, wallChargeTot_ring6, wallChargeTot_ring7, wallChargeTot_ring8, wallChargeTot_ring9, wallChargeTot_ring16, wallChargeTot_ring79;
 
+Short_t wallChargeTot_ring15, wallChargeTot_ring14, wallChargeTot_ring13, wallChargeTot_ring12;
+
+
+    Bool_t IsGoodEvent;
+        Bool_t IsGoodEvent_Cut1;
+        Bool_t IsGoodEvent_Cut2;
+        Bool_t IsGoodEvent_Cut3;
+        Bool_t IsGoodEvent_Cut4;
+        Bool_t IsGoodEvent_Cut5;
+        Bool_t IsGoodEvent_Cut6;
+        Bool_t IsGoodEvent_Cut7;
+        Bool_t IsGoodEvent_Cut8;
+
+    Int_t nRpcClust;
+    Int_t nRpcClustCut;
+    Int_t nTofHits;
+    Int_t nTofHitsCut;
+     Int_t nMDChits;
+    Int_t PrimaryTracks;
 
     const Short_t nWallSubEvents = 6;        //number of FW subevents
     const Short_t nWallRandomSubEvents = 10; //number of random FW subevents
@@ -181,6 +201,24 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
 
     TTree* tree = new TTree("tree", "HADES Au+Au 1.23 GeV 8gen tree for flow analysis");
     
+
+	tree->Branch("nRpcClust", &nRpcClust, "nRpcClust/I");
+tree->Branch("nRpcClustCut",&nRpcClustCut, "nRpcClustCut/I");
+tree->Branch("nTofHits", &nTofHits, "nTofHits/I");
+tree->Branch("nTofHitsCut", &nTofHitsCut, "nTofHitsCut/I");
+
+	tree->Branch("nMDChits", &nMDChits,   "nMDChits/I");
+	tree->Branch("PrimaryTracks", &PrimaryTracks,   "PrimaryTracks/I");
+    tree->Branch("IsGoodEvent",    &IsGoodEvent,    "IsGoodEvent/B");
+        tree->Branch("IsGoodEvent_Cut1",    &IsGoodEvent_Cut1,    "IsGoodEvent_Cut1/B");
+        tree->Branch("IsGoodEvent_Cut2",    &IsGoodEvent_Cut2,    "IsGoodEvent_Cut2/B");
+        tree->Branch("IsGoodEvent_Cut3",    &IsGoodEvent_Cut3,    "IsGoodEvent_Cut3/B");
+        tree->Branch("IsGoodEvent_Cut4",    &IsGoodEvent_Cut4,    "IsGoodEvent_Cut4/B");
+        tree->Branch("IsGoodEvent_Cut5",    &IsGoodEvent_Cut5,    "IsGoodEvent_Cut5/B");
+        tree->Branch("IsGoodEvent_Cut6",    &IsGoodEvent_Cut6,    "IsGoodEvent_Cut6/B");
+        tree->Branch("IsGoodEvent_Cut7",    &IsGoodEvent_Cut7,    "IsGoodEvent_Cut7/B");
+        tree->Branch("IsGoodEvent_Cut8",    &IsGoodEvent_Cut8,    "IsGoodEvent_Cut8/B");
+
     tree->Branch("nWallHitsTot",  &nWallHitsTot,  "nWallHitsTot/S");
     tree->Branch("wallQx",        wallQx,         "wallQx[6][2]/F");     
     tree->Branch("wallQy",        wallQy,         "wallQy[6][2]/F");
@@ -245,8 +283,23 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
     tree->Branch("pt_corr",  pt_corr,  "pt_corr[nTracks]/F");
     tree->Branch("rapidity_corr",rapidity_corr,"rapidity_corr[nTracks]/F");
     
+    tree->Branch("wallChargeTot",&wallChargeTot, "wallChargeTot/S");
+    tree->Branch("wallChargeTot_ring1",&wallChargeTot_ring1, "wallChargeTot_ring1/S");
+    tree->Branch("wallChargeTot_ring2",&wallChargeTot_ring2, "wallChargeTot_ring2/S");
+    tree->Branch("wallChargeTot_ring3",&wallChargeTot_ring3, "wallChargeTot_ring3/S");
+    tree->Branch("wallChargeTot_ring4",&wallChargeTot_ring4, "wallChargeTot_ring4/S");
+    tree->Branch("wallChargeTot_ring5",&wallChargeTot_ring5, "wallChargeTot_ring5/S");
+    tree->Branch("wallChargeTot_ring6",&wallChargeTot_ring6, "wallChargeTot_ring6/S");
+    tree->Branch("wallChargeTot_ring7",&wallChargeTot_ring7, "wallChargeTot_ring7/S");
+    tree->Branch("wallChargeTot_ring8",&wallChargeTot_ring8, "wallChargeTot_ring8/S");
+    tree->Branch("wallChargeTot_ring9",&wallChargeTot_ring9, "wallChargeTot_ring9/S");
+    tree->Branch("wallChargeTot_ring79",&wallChargeTot_ring79, "wallChargeTot_ring79/S");
+    tree->Branch("wallChargeTot_ring16",&wallChargeTot_ring16, "wallChargeTot_ring16/S");
+    tree->Branch("wallChargeTot_ring15",&wallChargeTot_ring15, "wallChargeTot_ring15/S");
+    tree->Branch("wallChargeTot_ring14",&wallChargeTot_ring14, "wallChargeTot_ring14/S");
+    tree->Branch("wallChargeTot_ring13",&wallChargeTot_ring13, "wallChargeTot_ring13/S");
+    tree->Branch("wallChargeTot_ring12",&wallChargeTot_ring12, "wallChargeTot_ring12/S");
     
-  //  tree->Branch("IsGoodEvent",    &IsGoodEvent,    "IsGoodEvent/B");   
     //#######################################################################
     //#######################################################################
 
@@ -286,7 +339,16 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
         HParticleEvtInfo* evtInfo=0;
         evtInfo = HCategoryManager::getObject(evtInfo,evtInfoCat,0 );
 
-	
+	if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodTRIGGER)) {IsGoodEvent_Cut1=true;} else {IsGoodEvent_Cut1=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodVertexClust)) {IsGoodEvent_Cut2=true;} else {IsGoodEvent_Cut2=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodVertexCand)) {IsGoodEvent_Cut3=true;} else {IsGoodEvent_Cut3=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodSTART)) {IsGoodEvent_Cut4=true;} else {IsGoodEvent_Cut4=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kNoPileUpSTART)) {IsGoodEvent_Cut5=true;} else {IsGoodEvent_Cut5=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kNoVETO)) {IsGoodEvent_Cut6=true;} else {IsGoodEvent_Cut6=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodSTARTVETO)) {IsGoodEvent_Cut7=true;} else {IsGoodEvent_Cut7=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodSTARTMETA)) {IsGoodEvent_Cut8=true;} else {IsGoodEvent_Cut8=false;}
+        if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodTRIGGER | Particle::kGoodVertexClust | Particle::kGoodVertexCand | Particle::kGoodSTART | Particle::kNoPileUpSTART | Particle::kNoVETO | Particle::kGoodSTARTVETO | Particle::kGoodSTARTMETA)) {IsGoodEvent=true;} else {IsGoodEvent=false;}
+
         if ( evtInfo&&!evtInfo->isGoodEvent(Particle::kGoodTRIGGER|
                                         Particle::kGoodVertexClust|
                                         Particle::kGoodVertexCand|
@@ -294,9 +356,7 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
                                         Particle::kNoPileUpSTART|
                                         Particle::kNoVETO|
                                         Particle::kGoodSTARTVETO|
-                                        Particle::kGoodSTARTMETA) ) 
-	
-			continue;
+                                        Particle::kGoodSTARTMETA) ) continue;
         
         
         //get primary vertex
@@ -306,6 +366,14 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
         vY = vertexReco.getY();
         vZ = vertexReco.getZ();
         vChi2 = vertexReco.getChi2();
+
+
+	PrimaryTracks=evtInfo->getSumPrimaryParticleCandMult();
+        nMDChits=evtInfo->getSumParticleCandMult();
+        nRpcClust = evtInfo->getSumRpcMult();
+        nRpcClustCut = evtInfo->getSumRpcMultCut();
+        nTofHits = evtInfo->getSumTofMult();
+        nTofHitsCut = evtInfo->getSumTofMultCut();
 
         //centrality
         /*evtChara.execute();
@@ -355,6 +423,22 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
         Int_t nA = 0;
         Int_t nB = 0;
         
+	wallChargeTot=0;
+        wallChargeTot_ring1=0;
+        wallChargeTot_ring2=0;
+        wallChargeTot_ring3=0;
+        wallChargeTot_ring4=0;
+        wallChargeTot_ring5=0;
+        wallChargeTot_ring6=0;
+        wallChargeTot_ring7=0;
+        wallChargeTot_ring16=0;
+        wallChargeTot_ring79=0;
+        wallChargeTot_ring15=0;
+        wallChargeTot_ring14=0;
+        wallChargeTot_ring13=0;
+        wallChargeTot_ring12=0;
+
+
         for(Short_t j=0; j<nWallHitsTot; j++) {
             wallHit = HCategoryManager::getObject(wallHit,wallCat,j);
             
@@ -365,7 +449,6 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
             isWallHitOk[j] = kFALSE;
             wallHitRing[j] = divider->GetRing(wallModuleIndex[j]);
             ring = wallHitRing[j];
-	//    NumberOfModule=wallModuleIndex[j];
             if (ring==-1) {
             	cerr << "Error in short MHWallDivider::GetRing(short i="<<wallModuleIndex[j]<<"): it's returned -1" << endl;
             	return 2;
@@ -385,6 +468,25 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
                 
                 isWallHitOk[j] = kTRUE;
                 
+
+		wallChargeTot+=wallHitCharge[j];
+
+
+                if (ring==1) wallChargeTot_ring1+=wallHitCharge[j];
+                if (ring==2) wallChargeTot_ring2+=wallHitCharge[j];
+                if (ring==3) wallChargeTot_ring3+=wallHitCharge[j];
+                if (ring==4) wallChargeTot_ring4+=wallHitCharge[j];
+                if (ring==5) wallChargeTot_ring5+=wallHitCharge[j];
+                if (ring==6) wallChargeTot_ring6+=wallHitCharge[j];
+                if (ring==7) wallChargeTot_ring7+=wallHitCharge[j];
+                if (ring==8) wallChargeTot_ring8+=wallHitCharge[j];
+                if (ring==9) wallChargeTot_ring9+=wallHitCharge[j];
+                if (ring<7) wallChargeTot_ring16+=wallHitCharge[j];
+                if (ring>6 && ring<10) wallChargeTot_ring79+=wallHitCharge[j];
+                if (ring<6) wallChargeTot_ring15+=wallHitCharge[j];
+                if ( ring<5) wallChargeTot_ring14+=wallHitCharge[j];
+                if (ring<4) wallChargeTot_ring13+=wallHitCharge[j];
+                if (ring<3) wallChargeTot_ring12+=wallHitCharge[j];
 
 
                 //Q vectors
@@ -574,9 +676,7 @@ Int_t makeTree(TString infileList, TString outfile, Int_t nEvents=-1)
         }
         
         tree->Fill(); 
-   
-//}
-     
+        
     } // end eventloop
 
     tree->Write();
