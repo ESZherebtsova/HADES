@@ -11,8 +11,8 @@
 void draw_2Dhistos() {
 
 TChain *tree1=new TChain("tree");
-//tree1->Add("/lustre/nyx/cbm/users/ogolosov/HADES/treeMaker/output/Nov_22_21_41/tree*.root");
-tree1->Add("/lustre/nyx/cbm/users/ogolosov/HADES/treeMaker/output/Nov_23_14_46/tree_12108160806.root");
+tree1->Add("/lustre/nyx/cbm/users/ogolosov/HADES/treeMaker/output/Nov_22_21_41/tree*.root");
+//tree1->Add("/lustre/nyx/cbm/users/ogolosov/HADES/treeMaker/output/Nov_23_14_46/tree_12108160806.root");
 
 TH2F *hEta_vs_Phi_pos=new TH2F("hEta_vs_Phi_pos","",160,0,1.6,628,0,6.28);
 TH2F *hEta_vs_Phi_neg=new TH2F("heta_vs_Phi_neg","",160,0,1.6,628,0,6.28);
@@ -66,9 +66,10 @@ TH2F *hPt_Phi_Scale=new TH2F("hEta_Pt_Scale","",2200,0,2200,628,0,6.28);
 
 
 			} //end track loop
-		entry++;	
 
 		} //end cut event loop
+
+		entry++;
 
 	} //END EVENT LOOP
 	
